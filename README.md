@@ -2,7 +2,7 @@
 1. Docker
 2. Maven
 3. OpenJDK17
-4. WSL или Linux
+4. WSL или Linux\n
 Команда запуска проекта:
 ```sh
  sudo docker-compose up --build
