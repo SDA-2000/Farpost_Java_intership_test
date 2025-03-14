@@ -8,7 +8,9 @@
 
 Команда запуска проекта:
 ```sh
- sudo docker-compose up --build
+#Следующую строку необходимо запустить при первом запуске проекта
+mvn clean package
+sudo docker-compose up --build
 ```
 После успешного запуска, API будет находиться по адресу:
 ```sh
