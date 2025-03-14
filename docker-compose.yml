@@ -1,0 +1,30 @@
+
+
+services:
+  app:
+    build: .
+    container_name: Farpost_java_intership_test_container
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/api_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: my_postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: api_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  pg_data:
