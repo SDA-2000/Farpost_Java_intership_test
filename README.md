@@ -6,7 +6,7 @@
 3. OpenJDK17
 4. WSL или Linux
 
-Необходимо создать .env файл в корне проекта на уровне docker-compose.yml со следующим содержимым:
+Необходимо создать .env файл на уровне docker-compose.yml со следующим содержимым:
 ```.env
 POSTGRE_USER=ваше_имя_пользователя_в_БД_PostgreSQL
 POSTGRE_USER_PASSWORD=пароль_пользователя
