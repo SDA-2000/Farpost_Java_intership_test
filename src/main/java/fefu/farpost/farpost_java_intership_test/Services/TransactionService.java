@@ -7,6 +7,7 @@ import fefu.farpost.farpost_java_intership_test.Repositories.TransactionReposito
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,7 +31,6 @@ public class TransactionService
         {
             throw new RuntimeException("Недостаточно стредств");
         }
-
         Transaction transaction = new Transaction();
         transaction.setAccount(account);
         transaction.setAmount(amount);
@@ -48,9 +48,35 @@ public class TransactionService
         accountRepository.save(account);
     }
 
+    @Transactional
+    public void MakeTransaction(Long accountId, Double amount, String description, LocalDate date,  Transaction.TransactionType type)
+    {
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Аккаунт не найден"));
+
+        if(type == Transaction.TransactionType.REMOVE && account.getBalance() < amount)
+        {
+            throw new RuntimeException("Недостаточно стредств");
+        }
+        Transaction transaction = new Transaction();
+        transaction.setAccount(account);
+        transaction.setAmount(amount);
+        transaction.setDescription(description);
+        transaction.setDate(date);
+        transaction.setType(type);
+
+        transactionRepository.save(transaction);
+
+        if(type == Transaction.TransactionType.ADD)
+            account.setBalance(account.getBalance() + amount);
+        else
+            account.setBalance(account.getBalance() - amount);
+
+        accountRepository.save(account);
+    }
+
     public List<Transaction> getTransactions(Long accountId, LocalDate date1, LocalDate date2)
     {
         Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Аккаунт не найден"));
-        return transactionRepository.findByAccountAndDateBetween(account, date1, date2);
+        return transactionRepository.findByAccountIdAndDateBetween(account.getId(), date1, date2, Sort.by(Sort.Direction.ASC, "date"));
     }
 }

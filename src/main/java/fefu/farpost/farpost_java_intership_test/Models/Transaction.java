@@ -1,10 +1,9 @@
 package fefu.farpost.farpost_java_intership_test.Models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Entity
@@ -15,6 +14,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="account_id", nullable = false)
     private Account account;
     private double amount;

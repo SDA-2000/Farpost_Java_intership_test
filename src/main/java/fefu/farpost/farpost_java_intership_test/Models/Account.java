@@ -1,6 +1,6 @@
 package fefu.farpost.farpost_java_intership_test.Models;
 
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,10 +14,11 @@ import java.util.List;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
     private double balance = 0;
     private LocalDate date = LocalDate.now();
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonManagedReference
     List<Transaction> transactions = new ArrayList<>();
 }
