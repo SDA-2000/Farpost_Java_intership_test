@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Service
@@ -16,8 +17,9 @@ public class AccountService {
 
     @Autowired
     private final AccountRepository accountRepository;
+
     @Autowired
-    private final TransactionRepository transactionRepository;
+    private final  TransactionRepository transactionRepository;
 
     public Account createAccount(String name)
     {
@@ -33,21 +35,10 @@ public class AccountService {
         return account.getBalance();
     }
 
-    public double getBalanceOnDate(Long accountId, LocalDate date)
+    public BigDecimal getBalanceOnDate(Long accountId, LocalDate date)
     {
         Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Аккаунт не найден"));
-        double balance_count = 0.0;
-
-        for(Transaction transaction : account.getTransactions())
-        {
-            if(!transaction.getDate().isAfter(date))
-            {
-                if(transaction.getType() == Transaction.TransactionType.ADD)
-                    balance_count += transaction.getAmount();
-                else
-                    balance_count -= transaction.getAmount();
-            }
-        }
-        return balance_count;
+        BigDecimal balance_account = transactionRepository.getBalanceBeforeDate(accountId, date);
+        return balance_account;
     }
 }

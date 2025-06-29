@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @RestController
@@ -29,7 +30,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}/balance_on_date")
-    public ResponseEntity<Double> getBalanceOnDate(@PathVariable Long id, @RequestParam @DateTimeFormat LocalDate date)
+    public ResponseEntity<BigDecimal> getBalanceOnDate(@PathVariable Long id, @RequestParam @DateTimeFormat LocalDate date)
     {
         return ResponseEntity.ok(accountService.getBalanceOnDate(id, date));
     }
